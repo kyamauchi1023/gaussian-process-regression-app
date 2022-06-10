@@ -1,0 +1,7 @@
+django
+django-crispy-forms
+gpytorch
+matplotlib
+numpy
+seaborn
+torch

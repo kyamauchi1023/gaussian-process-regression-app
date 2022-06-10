@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+{% load crispy_forms_tags %}
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>ガウス過程回帰を試してみよう！</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/mycustom.css' %}">
+	<style>
+		body {
+			background-color: #ffffff;
+		}
+	</style>
+</head>
+
+<body>
+	<h1 class="p-2 m-4">ガウス過程回帰を試してみよう！</h1>
+	<form action="{% url 'gprapp:index' %}" method='POST'>
+		{% csrf_token %}
+		<div class="row">
+			<div class="form-group col-sm-3">
+				{{ form.kernel|as_crispy_field }}
+			</div>
+			<div class="form-group col-sm-3">
+				{{ form.noise_scale|as_crispy_field }}
+			</div>
+			<div class="form-group col-sm-3">
+				{{ form.train_x_size|as_crispy_field }}
+			</div>
+			<div class="form-group col-sm-3">
+				{{ form.seed|as_crispy_field }}
+			</div>
+		</div>
+		<div class="mx-auto" style="width: 200px;">
+			<button type="submit" class="btn btn-outline-primary">学習と推論を実行</button>
+		</div>
+	</form>
+	{% if chart %}
+		<div class="image">
+			<img src="data:image/png;base64,{{ chart | safe }}">
+		</div>
+	{% endif %}
+
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

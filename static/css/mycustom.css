@@ -1,0 +1,23 @@
+.image {
+    text-align: center;
+}
+
+h1{
+    color: #444;
+    font-size: 24px;
+    line-height: 1.6em;
+    padding: 0 0 2px 12px;
+    border-left: 4px solid #444;
+    border-bottom: 1px solid #888;
+}
+
+body{
+    background: #5b6a78;
+}
+  
+div{
+    width: 100%;
+    margin: 0 auto;
+    padding: 8px;
+    background: #fff;
+}
