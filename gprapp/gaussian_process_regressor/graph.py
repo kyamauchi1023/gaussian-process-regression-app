@@ -33,7 +33,6 @@ def plot_graph(x, original_y, train_x, train_y, prediction, lower, upper):
 	plt.figure(figsize=(10, 5))  # グラフサイズ
 	_plot_original_graph(x, original_y)
 	_plot_predicted_graph(x, train_x, train_y, prediction, lower, upper)
-	plt.xticks(rotation=45)  # X軸値を45度傾けて表示
 	plt.title("Gaussian Process Regression")  # グラフタイトル
 	plt.xlabel("$t$")  # xラベル
 	plt.ylabel("$f(t)$")  # yラベル
