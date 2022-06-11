@@ -39,8 +39,8 @@ class ParamsForm(forms.Form):
     )
 
     train_x_size = forms.IntegerField(
-        initial = 20,
-        label = 'train dataの数(1〜500の整数)',
+        initial = 10,
+        label = 'train dataの数',
         validators = [MinValueValidator(1), MaxValueValidator(500)],
         required = True,
     )

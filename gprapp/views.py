@@ -54,7 +54,7 @@ class Index(TemplateView):
         random.seed(seed)
         torch.manual_seed(seed)
 
-        train_x = torch.linspace(-1, 1, train_x_size)
+        train_x = torch.FloatTensor(train_x_size).uniform_(-1, 1)
         train_y = noised_true_func(train_x, noise_scale)
 
         # 学習

@@ -6,8 +6,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>ガウス過程回帰を試してみよう！</title>
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 	<link rel="stylesheet" href="{% static 'css/mycustom.css' %}">
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_SVG"></script>
 	<style>
 		body {
 			background-color: #ffffff;
@@ -15,34 +16,111 @@
 	</style>
 </head>
 
-<body>
-	<h1 class="p-2 m-4">ガウス過程回帰を試してみよう！</h1>
-	<form action="{% url 'gprapp:index' %}" method='POST'>
-		{% csrf_token %}
-		<div class="row">
-			<div class="form-group col-sm-3">
-				{{ form.kernel|as_crispy_field }}
-			</div>
-			<div class="form-group col-sm-3">
-				{{ form.noise_scale|as_crispy_field }}
-			</div>
-			<div class="form-group col-sm-3">
-				{{ form.train_x_size|as_crispy_field }}
-			</div>
-			<div class="form-group col-sm-3">
-				{{ form.seed|as_crispy_field }}
-			</div>
+<body class="pt-3">
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<a href="" class="navbar-brand">Gaussian Process Regressor</a>
+		</nav>
+	</header>
+
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<h1 class="display-5">ガウス過程回帰を試してみよう！</h1>
+			<p>ガウス過程回帰が簡単に体験できるアプリです.</p>
 		</div>
-		<div class="mx-auto" style="width: 200px;">
-			<button type="submit" class="btn btn-outline-primary">学習と推論を実行</button>
-		</div>
-	</form>
+	</div>
+
+	<div class="container">
+		<form action="{% url 'gprapp:index' %}" method='POST'>
+			{% csrf_token %}
+			<div class="row">
+				<div class="form-group col-md-2">
+					{{ form.kernel|as_crispy_field }}
+				</div>
+				<div class="form-group col-md-2">
+					{{ form.noise_scale|as_crispy_field }}
+				</div>
+				<div class="form-group col-md-2">
+					{{ form.train_x_size|as_crispy_field }}
+				</div>
+				<div class="form-group col-md-2">
+					{{ form.seed|as_crispy_field }}
+				</div>
+				<div class="form-group col-md-3">
+					<p></p>
+					<button type="submit" class="btn btn-primary btn-lg">学習と推論を実行</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	{% if chart %}
 		<div class="image">
 			<img src="data:image/png;base64,{{ chart | safe }}">
 		</div>
 	{% endif %}
 
-	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<div class="container">
+		<h2>使い方</h2>
+	</div>
+
+	<div class="container">
+		<h4>1. カーネル関数の種類を選択</h4>
+		<p>まず, ガウス過程回帰に用いるカーネル関数を選択してください. 選択できるカーネル関数は以下のいずれかです.</p>
+			<ul>
+				<li>RBFKernel</li>
+				<li>CosineKernel</li>
+				<li>LinearKernel</li>
+				<li>nd-PolynomialKernel(n = 2, ..., 9)</li>
+			</ul>
+		<p>これらの関数の詳細は<a href="https://docs.gpytorch.ai/en/v1.5.1/kernels.html" target="_blank">GPyTorchの公式ドキュメント</a>を参照してください.</p>
+
+		<h4>2. ノイズのスケール<math><mi>&delta;</mi></math>を選択</h4>
+	</div>
+
+	<div class="container">
+		<p>元の信号は以下の式に従って生成されています.</p>
+		<p>
+			<math>
+				<mi>f</mi>
+				<mo>&ApplyFunction;</mo>
+				<mfenced>
+					<mrow>
+					<mi>t</mi>
+					</mrow>
+				</mfenced>
+				<mo>=</mo>
+				<msup>
+					<mi>e</mi>
+					<mi>t</mi>
+				</msup>
+				<mi>sin</mi>
+				<mi>2</mi>
+				<mi>&pi;</mi>
+				<mi>t</mi>
+				<mo>+</mo>
+				<mi>&delta;</mi>
+				<mi>&epsilon;</mi>
+			</math>
+		</p>
+		<p>ここで, <math><mi>&epsilon;</mi></math>は標準正規分布からサンプリングされたノイズで, <math><mi>&delta;</mi></math>倍されて真の関数に加算されています.  
+		<math><mi>&delta;</mi></math>を調整することでノイズの影響の大きさを調整することができます.  この信号に対してガウス過程回帰を実行します.</p>
+    </div>
+
+	<div class="container">
+		<h4>3. train dataの数(1〜500の整数)を入力</h4>
+		<p>train dataの数を1〜500の整数から選択してください.  train dataの数多くするほど信用区間が小さくなることを確認できると思います.</p>
+	</div>
+
+	<div class="container">
+		<h4>4. シード値(自然数)を入力</h4>
+		<p>これを入力することでシード値を固定することができます.</p>
+	</div>
+
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
 </body>
 </html>
