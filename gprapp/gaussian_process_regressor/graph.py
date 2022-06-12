@@ -16,22 +16,22 @@ def _output_graph():
 	return graph
 
 
-# 元の信号のグラフをプロットするための関数
-def _plot_original_graph(x, original_y):
-	plt.scatter(x, original_y, s=10, label="original signal", color="green")
+# 真の関数のグラフをプロットするための関数
+def _plot_true_graph(x, true_y):
+	plt.plot(x, true_y, label="true function", color="green")
 
 
 # 推論結果のグラフをプロットするための関数
 def _plot_predicted_graph(x, train_x, train_y, prediction, lower, upper):
-    plt.scatter(train_x.numpy(), train_y.numpy(), s=100, label='Observed Data', color='red', marker="*")
+    plt.scatter(train_x.numpy(), train_y.numpy(), s=30, label='Observed Data', color='red', marker="*")
     plt.plot(x.numpy(), prediction.mean.numpy(), 'b', label='Mean')
     plt.fill_between(x.numpy(), lower.numpy(), upper.numpy(), alpha=0.3, label='Confidence')
 
 
-def plot_graph(x, original_y, train_x, train_y, prediction, lower, upper):
+def plot_graph(x, true_y, train_x, train_y, prediction, lower, upper):
 	plt.switch_backend("AGG")  # スクリプトを出力させない
 	plt.figure(figsize=(10, 5))  # グラフサイズ
-	_plot_original_graph(x, original_y)
+	_plot_true_graph(x, true_y)
 	_plot_predicted_graph(x, train_x, train_y, prediction, lower, upper)
 	plt.xlabel("$t$")  # xラベル
 	plt.ylabel("$f(t)$")  # yラベル

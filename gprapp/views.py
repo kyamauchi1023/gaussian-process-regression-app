@@ -1,14 +1,11 @@
-import random
-
 from django.views.generic import TemplateView
 from django.shortcuts import render
-import numpy as np
 import torch
 
 from .gaussian_process_regressor.graph import plot_graph
 from .gaussian_process_regressor.predict import predict
 from .gaussian_process_regressor.train import train
-from .gaussian_process_regressor.true_func import noised_true_func
+from .gaussian_process_regressor.true_func import noised_true_func, true_func
 from . import forms
 
 
@@ -22,7 +19,6 @@ class Index(TemplateView):
             'kernel': 'RBFKernel',
             'noise_scale': 0.1,
             'train_x_size': 20,
-            'seed': 42,
             'form': forms.ParamsForm(),
         }
 
@@ -42,17 +38,11 @@ class Index(TemplateView):
             self.context['kernel'] = form.cleaned_data['kernel']
             self.context['noise_scale'] = float(form.cleaned_data['noise_scale'])
             self.context['train_x_size'] = int(form.cleaned_data['train_x_size'])
-            self.context['seed'] = int(form.cleaned_data['seed'])
             self.context['form'] = form
 
         kernel = self.context['kernel']
         noise_scale = self.context['noise_scale']
         train_x_size = self.context['train_x_size']
-        seed = self.context['seed']
-
-        np.random.seed(seed)
-        random.seed(seed)
-        torch.manual_seed(seed)
 
         train_x = torch.FloatTensor(train_x_size).uniform_(-1, 1)
         train_y = noised_true_func(train_x, noise_scale)
@@ -65,8 +55,8 @@ class Index(TemplateView):
         predict_result = predict(x, **train_result)
 
         # グラフを表示
-        original_y = noised_true_func(x, noise_scale)
-        chart = plot_graph(x, original_y, train_x, train_y, **predict_result)
+        true_y = true_func(x)
+        chart = plot_graph(x, true_y, train_x, train_y, **predict_result)
 
         # 変数を渡す
         self.context['chart'] = chart

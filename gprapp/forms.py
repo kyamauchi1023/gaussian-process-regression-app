@@ -23,30 +23,16 @@ class ParamsForm(forms.Form):
         widget=forms.widgets.Select,
     )
 
-    noise_scale = forms.fields.ChoiceField(
+    noise_scale = forms.FloatField(
         initial = 0.1,
-        label='ノイズのスケール',
-        choices = (
-            (0.0, 0.0),
-            (0.1, 0.1),
-            (0.2, 0.2),
-            (0.3, 0.3),
-            (0.4, 0.4),
-            (0.5, 0.5),
-        ),
-        required=True,
-        widget=forms.widgets.Select,
+        label = 'ノイズのスケール',
+        validators = [MinValueValidator(0.0), MaxValueValidator(1.0)],
+        required = True,
     )
 
     train_x_size = forms.IntegerField(
         initial = 10,
-        label = 'train dataの数',
+        label = '観測データ数',
         validators = [MinValueValidator(1), MaxValueValidator(500)],
-        required = True,
-    )
-
-    seed = forms.IntegerField(
-        initial = 42,
-        label = 'シード値を指定',
         required = True,
     )
